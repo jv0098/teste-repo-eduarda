@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz Microbiologia</title>
+<style>
+body{font-family:Arial;margin:20px;background:#f4f6f9}
+.card{background:#fff;padding:20px;border-radius:15px;max-width:600px;margin:auto}
+button{display:block;width:100%;padding:10px;margin:8px 0;border:none;border-radius:8px;background:#e8ecf1}
+button:hover{cursor:pointer}
+#progress{height:20px;background:#ddd;border-radius:10px}
+#bar{height:100%;width:0%;background:#4caf50;border-radius:10px}
+</style></head><body>
+<div class="card">
+<h2>Quiz de Microbiologia e Parasitologia</h2>
+<div id="progress"><div id="bar"></div></div>
+<p id="counter"></p>
+<h3 id="question"></h3>
+<div id="answers"></div>
+<p id="feedback"></p>
+<button id="next" style="display:none" onclick="nextQ()">Próxima</button>
+</div>
+<script>
+const q=[('Método mais sensível para detectar parasitas no sangue?', ['Esfregaço', 'Gota espessa', 'PCR', 'HPJ'], 1), ('Nos protozoários intestinais, pesquisam-se:', ['Ovos', 'Larvas', 'Cistos e trofozoítos', 'Proglotes'], 2), ('O método HPJ baseia-se em:', ['Flutuação', 'Sedimentação', 'PCR', 'Hemólise'], 1), ('MacConkey é seletivo para:', ['Gram+', 'Gram-', 'Fungos', 'Protozoários'], 1), ('MacConkey diferencia bactérias pela:', ['Coagulase', 'Catalase', 'Lactose', 'Urease'], 2), ('Meio mais usado em urocultura:', ['CLED', 'Manitol', 'Chocolate', 'Mueller-Hinton'], 0), ('Ágar-sangue indica:', ['Lactose', 'Hemólise', 'Urease', 'KPC'], 1), ('Ágar-manitol seleciona:', ['Estreptococos', 'E. coli', 'Estafilococos', 'Fungos'], 2), ('KPC é:', ['Fungo', 'Enzima de resistência', 'Protozoário', 'Vírus'], 1), ('S. pyogenes causa:', ['ITU', 'Faringite', 'Tuberculose', 'Malária'], 1), ('Na PCR, a desnaturação ocorre em:', ['37°C', '60°C', '72°C', '95°C'], 3), ('Função dos primers:', ['Produzir ATP', 'Iniciar síntese do DNA', 'Inibir bactérias', 'Separar fitas'], 1), ('Estafilococos aparecem em:', ['Cadeias', 'Cachos', 'Diplococos', 'Espirais'], 1), ('Estreptococos aparecem em:', ['Cadeias', 'Cachos', 'Bacilos', 'Espirais'], 0), ('Teste que diferencia estafilos e estreptos:', ['Urease', 'Catalase', 'Coagulase', 'Indol'], 1), ('S. aureus é:', ['Coagulase-', 'Coagulase+', 'Catalase-', 'α-hemolítico'], 1), ('S. pneumoniae apresenta:', ['β-hemólise', 'γ-hemólise', 'α-hemólise', 'Coagulase+'], 2), ('Urocultura positiva classicamente:', ['10²', '10³', '10⁴', '10⁵ UFC/mL'], 3), ('E. coli é:', ['Lactose+ urease-', 'Lactose- urease+', 'Lactose+ urease+', 'Lactose- urease-'], 0), ('Substância indicadora no MacConkey:', ['Cristal violeta', 'Vermelho neutro', 'Sal', 'Ágar'], 1), ('Substância inibidora no MacConkey:', ['Lactose', 'Vermelho neutro', 'Sais biliares', 'Glicose'], 2), ('PCR significa:', ['Proteína C Reativa', 'Reação em Cadeia da Polimerase', 'Pesquisa Clínica Rápida', 'Perfil de Resistência'], 1), ('A extensão da PCR ocorre em:', ['95°C', '72°C', '60°C', '37°C'], 1), ('Parasita associado à malária:', ['Taenia', 'Plasmodium', 'Giardia', 'Ascaris'], 1), ('Principal causa de ITU:', ['S. aureus', 'Klebsiella', 'S. pyogenes', 'E. coli'], 3)];
+let i=0, score=0;
+function show(){
+document.getElementById('feedback').textContent='';
+document.getElementById('next').style.display='none';
+document.getElementById('counter').textContent=`Pergunta ${i+1} de ${q.length}`;
+document.getElementById('bar').style.width=((i)/q.length*100)+'%';
+document.getElementById('question').textContent=q[i][0];
+let a=document.getElementById('answers'); a.innerHTML='';
+q[i][1].forEach((op,idx)=>{
+let b=document.createElement('button');
+b.textContent=op;
+b.onclick=()=>check(idx,b);
+a.appendChild(b);
+});
+}
+function check(idx,btn){
+document.querySelectorAll('#answers button').forEach(b=>b.disabled=true);
+if(idx===q[i][2]){score++;document.getElementById('feedback').innerHTML='✅ Correto!';}
+else{document.getElementById('feedback').innerHTML='❌ Correto: '+q[i][1][q[i][2]];}
+document.getElementById('next').style.display='block';
+}
+function nextQ(){
+i++;
+if(i<q.length) show();
+else document.querySelector('.card').innerHTML=`<h2>Fim do Quiz!</h2><p>Você acertou ${score} de ${q.length} questões.</p><button onclick="location.reload()">Refazer</button>`;
+}
+show();
+</script></body></html>
